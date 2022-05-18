@@ -23,11 +23,9 @@ class Framework:
         if not path.endswith('/'):
             path = f'{path}/'
 
-        request = {}
         # Получаем все данные запроса
         method = environ['REQUEST_METHOD']
-        request['method'] = method
-
+        request = {'method': method}
         if method == 'POST':
             data = PostRequests().get_request_params(environ)
             request['data'] = Framework.decode_value(data)
@@ -40,11 +38,7 @@ class Framework:
 
         # находим нужный контроллер
         # отработка паттерна page controller
-        if path in self.routes_lst:
-            view = self.routes_lst[path]
-        else:
-            view = PageNotFound404()
-
+        view = self.routes_lst[path] if path in self.routes_lst else PageNotFound404()
         # наполняем словарь request элементами
         # этот словарь получат все контроллеры
         # отработка паттерна front controller
