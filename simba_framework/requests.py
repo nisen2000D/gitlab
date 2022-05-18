@@ -17,9 +17,7 @@ class GetRequests:
     def get_request_params(environ):
         # получаем параметры запроса
         query_string = environ['QUERY_STRING']
-        # превращаем параметры в словарь
-        request_params = GetRequests.parse_input_data(query_string)
-        return request_params
+        return GetRequests.parse_input_data(query_string)
 
 
 # post requests
@@ -44,13 +42,9 @@ class PostRequests:
         # приводим к int
         content_length = int(content_length_data) if content_length_data else 0
         print(content_length)
-        # считываем данные, если они есть
-        # env['wsgi.input'] -> <class '_io.BufferedReader'>
-        # запускаем режим чтения
-
-        data = env['wsgi.input'].read(content_length) \
-            if content_length > 0 else b''
-        return data
+        return (
+            env['wsgi.input'].read(content_length) if content_length > 0 else b''
+        )
 
     def parse_wsgi_input_data(self, data: bytes) -> dict:
         result = {}
